@@ -1,0 +1,37 @@
+trigger RecentDataFinder on Assessments__c (after insert, after update,after delete) {
+    Date Today = Date.today();
+    Integer ActualDiff = 0;
+    String FinalBuildingName;
+    Date FinalRecentDate;
+    Decimal FinalValue;
+  
+    for(Assessments__c AC: Trigger.new){
+        Date TempDate = date.valueOf(AC.Assessment_Date__c);
+         if(Today>=TempDate){
+            Integer TempDiff = Today.daysBetween(TempDate);
+            
+            if (ActualDiff >= TempDiff & ActualDiff ==0){
+                ActualDiff = TempDiff;
+                FinalBuildingName = [select Building__r.Name from Assessments__c where id =: AC.Id Limit 1].Building__r.Name;
+                FinalRecentDate = AC.Assessment_Date__c;
+                FinalValue = AC.Assessment_Value__c;           
+            }
+            else if(ActualDiff< TempDiff){
+                ActualDiff = TempDiff;
+                //FinalBuildingName = AC.Building__r.Name;
+                FinalBuildingName = [select Building__r.Name from Assessments__c where id =: AC.Id Limit 1].Building__r.Name;
+                FinalRecentDate = AC.Assessment_Date__c;
+                FinalValue = AC.Assessment_Value__c;
+            } 
+                 
+        }
+    }
+    if(!String.isEmpty(FinalBuildingName)){
+    Building__c BC = [Select id from Building__c where Building__c.Name=:FinalBuildingName Limit 1];
+    //Building__c BC = [Select id from Building__c where Building__c.Name= 'Cube84' Limit 1];
+    BC.Recent_Assessment_Date__c =FinalRecentDate;
+    BC.Recent_Assessment_Value__c = FinalValue;
+    upsert BC;
+    }
+ 
+}
