@@ -1,0 +1,26 @@
+trigger Contact_Finder on Account ( after update) {
+
+    if(triggerHelperClass.variable == false){
+    List<Account> li = new List<Account>();
+        
+    List<Account> id1= [select id from Account];
+    Set<String> li1 = new Set<String>();
+    for(Integer i=0; i<id1.size();i++){
+        li1.add(id1[i].id);
+    }
+    for(Account acc1 :[select id, (select id from Contacts) from Account where id =:li1]){
+        Account acc = new Account();
+        acc.id = acc1.id;
+        acc.Number_of_Contacts__c = acc1.contacts.size();
+        li.add(acc);
+    }
+    
+    triggerHelperClass.variable =true;     
+    update li;
+    }
+    
+}
+-----------------------------------------------------------------------------------------------------------
+public class triggerHelperClass {
+public static boolean variable = false;
+}
