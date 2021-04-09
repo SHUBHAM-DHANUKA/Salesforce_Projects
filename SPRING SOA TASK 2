@@ -1,0 +1,64 @@
+----------------------------------------
+Application:
+<aura:application >
+    <c:MyContactComponent />
+</aura:application>
+----------------------------------------
+Component
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="MyClass" >
+	<p>Hello Recent Account List</p>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    <aura:attribute name="getList" type="Account[]" />
+    
+                <aura:iteration items="{!v.getList}" var="acc"> <!-- iteration account record.-->
+                  <tr class="slds-hint-parent">
+                      <th scope="row">
+                          <div class="slds-truncate" title="Adam Choi"><a href="javascript:void(0);">{!acc.Name}</a></div>
+                      </th>
+                      <td>
+                          <div class="slds-truncate" title="Company One">{!acc.AccountNumber}</div>
+                      </td>
+                      <td>
+                          <div class="slds-truncate" title="{!acc.Phone}">{!acc.Phone}</div>
+                      </td>
+                        <td>
+                          <div class="slds-truncate" title="{!acc.Phone}">{!acc.CreatedDate}</div>
+                      </td>
+              
+                  </tr>                     
+              </aura:iteration>
+</aura:component>
+-------------------------------------------------
+Client Controller:
+({
+	myAction : function(component, event, helper) {
+		
+	},
+    doInit: function(component, event, helper) {
+        // Create the action
+        let action = component.get("c.getAccountList");
+        // Add callback behavior for when response is received
+        action.setCallback(this, function(response) {
+            let state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.getList", response.getReturnValue());
+                console.log(response.getReturnValue());
+            }
+            else {
+                console.log("Failed with state: " + state);
+            }
+        });
+        // Send action off to be executed
+        $A.enqueueAction(action);
+    }
+})
+-------------------------------------------------------------
+Server Controller:
+public class MyClass {
+    @AuraEnabled
+    public static List<Account> getAccountList(){
+        List<Account> li = [select id, AccountNumber, Name, Phone, CreatedDate from Account ORDER BY CreatedDate  DESC Limit 10 ];
+        return li;
+    }
+}
+-------------------------------------------------------------
