@@ -1,0 +1,18 @@
+public class callout {
+    public static void hi(){
+        Http h = new Http();
+        
+        HttpRequest hr = new HttpRequest();
+        hr.setEndpoint('https://postman-echo.com/get?foo1=bar1&foo2=bar2');
+        hr.setMethod('GET');
+        
+       
+        
+        HttpResponse hr1 = new HttpResponse();
+        hr1 =  h.send(hr);
+        System.debug('body' + hr1.getBody());
+    }
+}
+
+Note First:
+Remote site setting : authenicate URL
