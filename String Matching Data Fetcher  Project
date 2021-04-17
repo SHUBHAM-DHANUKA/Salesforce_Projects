@@ -1,0 +1,64 @@
+Application 
+<aura:application >
+    <c:StringFinder />
+</aura:application>
+
+-----------------------
+Lightning component : 
+<aura:component controller= "StringMatcher" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<h1> Data Finder </h1>
+    <lightning:formattedText value="Enter your Desire input that will search on Account Object" />
+    
+    <aura:attribute type="String" name="query" />
+    <lightning:input type = "text" value="{!v.query}" name="query" onkeyup="{!c.stringFinder}" />
+    
+    <br/>
+    
+    
+    <aura:attribute type="Object" name="list"  />
+    
+    <aura:iteration items="{!v.list}" var="listData" >
+        <p>{!listData.Name}</p> <br/>
+    </aura:iteration>
+    
+    <br/>
+
+ </aura:component>
+ --------------------------------------------
+ Client side controller : 
+ ({
+	myAction : function(component, event, helper) {
+		
+	},
+    stringFinder: function(component, event, helper) {
+    
+        //alert("hi");
+        var a = component.get("v.query");
+        //console.log(a);
+		var action = component.get("c.accountStringFinder");
+        action.setParams({
+            searchKey : a
+            
+        });
+ 
+           action.setCallback(this, function(response){
+            console.log(JSON.stringify(response.getReturnValue() , null, 4));
+            component.set("v.list", response.getReturnValue());
+        });        
+          $A.enqueueAction(action);
+    }
+})
+
+--------------------------------------------------------------------------
+Server side controller  : 
+
+
+public class StringMatcher {
+    @auraEnabled 
+    public static List<Account> accountStringFinder(String searchKey){
+        String name = '%'+searchKey +'%';
+        return [select id, Name from Account where Name Like :name];
+    }
+
+}
+-------------------------------------------------------------------------------------------------
