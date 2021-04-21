@@ -1,0 +1,58 @@
+Country level code:
+<aura:component >
+	<h1>This is Country Component</h1>
+     <c:State />
+</aura:component>
+
+--------------------------------------------------------------------------------------------------------------------------
+StateLevel Code:
+<aura:component >
+	<h1>This is State Component</h1>
+     <c:District />
+    <aura:handler name="lowpriority" value="{!v.firstEventAttribute}" event="c:firstEvent" action ="{!c.doEvent}"/>
+</aura:component>
+
+Controller: 
+({
+	myAction : function(component, event, helper) {
+		
+	},
+    doEvent : function(component, event, helper) {
+        var a = event.getParam("firstEventAttribute");
+        //console.log(a);
+        alert(a);
+	}
+})
+
+--------------------------------------------------------------------------------------------------------------------------
+District level code:
+<aura:component >
+	<h1>This is District Component</h1>
+    <aura:registerEvent name="lowpriority" type="c:firstEvent" />
+    <lightning:input type="button" value="fire the event" onclick="{!c.dofire}" />
+    
+</aura:component>
+
+Controller : 
+({
+	myAction : function(component, event, helper) {
+		
+	},
+    dofire: function(component, event, helper) {
+		//alert("check");
+		var captureEvent = component.getEvent("lowpriority");
+        captureEvent.setParams({"firstEventAttribute":"this is set of attribute paramater"});
+        captureEvent.fire();
+	}
+})
+
+--------------------------------------------------------------------------------------------------------------------------
+Application 
+<aura:application >
+    <c:Country />
+</aura:application>
+--------------------------------------------------------------------------------------------------------------------------
+Event:
+<aura:event type="COMPONENT" description="Event template" >
+<aura:attribute name ="firstEventAttribute" type="String" default="this is default"/>
+</aura:event>
