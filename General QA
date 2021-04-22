@@ -1,0 +1,6 @@
+Qustion: How to get a particular record id and update that record through trigger ?
+Ans:  It is something created by salesforce itself 
+While inserting record, record id gets generated 
+While creating component, id gets generated 
+While getting response, a particular response id there. 
+----------------------------------------------------------------------
