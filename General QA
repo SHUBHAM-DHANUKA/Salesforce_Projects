@@ -1,6 +1,19 @@
 Qustion: How to get a particular record id and update that record through trigger ?
+
 Ans:  It is something created by salesforce itself 
 While inserting record, record id gets generated 
 While creating component, id gets generated 
 While getting response, a particular response id there. 
+----------------------------------------------------------------------
+Question: Apex Direct field is showing or accessing in component 
+Answer:   U can do that just define the attribute of that object type and pass that object attribute as a reference to the server controller. 
+
+Aura Controller: yes u can directly use Object fields 
+And pass entire object as a parameter in server controller 
+
+
+In the apex page there is also this thing there.   
+And it also provides a standard action method to handle the basic tasks. 
+
+But it's not a recommended approach to assign value directly to the object field or to expose field api name. 
 ----------------------------------------------------------------------
