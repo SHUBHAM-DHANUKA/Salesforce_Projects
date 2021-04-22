@@ -16,4 +16,31 @@ In the apex page there is also this thing there.
 And it also provides a standard action method to handle the basic tasks. 
 
 But it's not a recommended approach to assign value directly to the object field or to expose field api name. 
-----------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
+How to optimized test code coverage of try / catch block 
+Do positive and negative round of testing
+---------------------------------------------------------------------------------------------------------------------------
+Q input and output tag
+Input tag
+Defining of button 
+Type and value is confusing 
+Some time we define type some time not and directly use standard tag 
+E.g:  ::: 
+<lightning:button label=”” onclick=””/>
+<lightning:input type=”button” label=”” /> 
+
+Same with value and label ::: 
+Value should be ideally what we are defining in that, variable or call attribute whatever so 
+Label should be on the top message displaying 
+
+But sometimes value is playing as label:::: 
+<apex:commandButton value="save"/>
+
+Hint: 
+Input tag:  for input tag: value goes inside what value is define
+Output tag : for output tag:  value shows on what value define  
+Its game of input and output tag category
+---------------------------------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------------------------------
