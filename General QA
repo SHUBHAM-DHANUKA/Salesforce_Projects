@@ -41,6 +41,35 @@ Input tag:  for input tag: value goes inside what value is define
 Output tag : for output tag:  value shows on what value define  
 Its game of input and output tag category
 ---------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+Question Searching of a string 
+Answer: 
+On component use event 
+onKeyUp 
+
+
+String name = ‘%’+searchKey +’%’;
+Return [select id, name from contact where name Like :name LIMIT 50];
+
+Return [select id, name, account.name from contact where id = :id ]
+
+-------------------------------------------------------------------------------------------------------------------------------
+Client Side Controller → Server Side controller 
+
+Controller 
+Event
+Helper 
+Through aura framework using composite API Passing value to Server
+
+Server1  → Server2
+Method define and by Web Callout 
+
+Framework defines Action Method 
+By using Action Method do Web Callout 
+In web callout use Networking concept to transfer the information 
+-------------------------------------------------------------------------------------------------------------------------------
 
 
 ---------------------------------------------------------------------------------------------------------------------------
