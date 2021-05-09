@@ -1,0 +1,199 @@
+HTML:
+<template>
+    <lightning-card title="Navigation">
+        <lightning-layout>
+            <lightning-layout-item>
+                <p> Hello Navigation services </p>
+                <lightning-button label="navigate to home page" onclick={navigatetohome}></lightning-button>
+                <lightning-button label="navigate to chatter" onclick={navigatetochatter}></lightning-button>
+                <lightning-button label="navigate to new Record" onclick={navigatetonewrecord}></lightning-button>
+                <lightning-button label="navigate to new Record with default value"
+                    onclick={navigatetonewrecordwithvalue}></lightning-button>
+                <lightning-button label="navigate to list view" onclick={navigatetolistview}>
+                </lightning-button>
+
+                <lightning-button label="navigate to file" onclick={navigatetofile}>
+                </lightning-button>
+                <lightning-button label="Navigate to record page with view and edit mode"
+                    onclick={navigatetorecordpage}>
+                </lightning-button>
+                <lightning-button label="navigation to tab" onclick={navigationtotab}>
+                </lightning-button>
+
+                <lightning-button label="navigation to relationship page" onclick={navigationtorelationshippage}>
+                </lightning-button>
+
+                <lightning-button label="navigation to external web page" onclick={navigatetoexternalpage}>
+                </lightning-button>
+
+                <lightning-button label="navigation to LWC Page" onclick={navigatetoLWCPage}>
+                </lightning-button>
+                <lightning-button label="current page reference" onclick={currentpage}>
+                </lightning-button>
+
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+</template>
+---------------------------------------------------------------------------------------------------------------------------------------------------
+Javascript: 
+import { LightningElement, track, wire } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
+import { CurrentPageReference } from 'lightning/navigation';
+import { encodeDefaultFieldValues } from 'lightning/pageReferenceUtils';
+export default class NavigationServices extends NavigationMixin(LightningElement) {
+
+    navigatetohome() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__namedPage',
+            attributes: {
+                pageName: 'home'
+            },
+        });
+
+    }
+    navigatetochatter() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__namedPage',
+            attributes: {
+                pageName: 'chatter'
+            },
+        });
+
+    }
+    navigatetonewrecord() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__objectPage',
+            attributes: {
+                objectApiName: 'Contact',
+                actionName: 'new'
+            },
+        });
+
+    }
+
+
+
+
+    navigatetonewrecordwithvalue() {
+        const defaultValues = encodeDefaultFieldValues({
+            FirstName: 'Morag',
+            LastName: 'de Fault',
+            LeadSource: 'Other'
+        });
+        this[NavigationMixin.Navigate]({
+            type: 'standard__objectPage',
+            attributes: {
+                objectApiName: 'Contact',
+                actionName: 'new'
+            },
+            state: {
+                defaultFieldValues: defaultValues
+            }
+
+        });
+    }
+
+
+
+    navigatetolistview() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__objectPage',
+            attributes: {
+                objectApiName: 'Contact',
+                actionName: 'list'
+            },
+            state: {
+                filterName: 'Recent'
+            }
+        });
+    }
+
+    navigatetofile() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__objectPage',
+            attributes: {
+                objectApiName: 'ContentDocument',
+                actionName: 'home'
+            },
+        });
+    }
+
+
+    navigatetorecordpage() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordPage',
+            attributes: {
+                objectApiName: 'Contact',
+                recordId: '003N000001oPmYNIA0',
+                actionName: 'edit'
+            },
+        });
+    }
+
+    navigationtotab() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__navItemPage',
+            attributes: {
+                apiName: 'Test'
+            }
+        });
+    }
+
+    navigationtorelationshippage() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__recordRelationshipPage',
+            attributes: {
+                objectApiName: 'Account',
+                recordId: '001N0000021oEAkIAM',
+                relationshipApiName: 'Contacts',
+                actionName: 'view'
+            }
+        });
+
+    }
+
+
+    navigatetoexternalpage() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__webPage',
+            attributes: {
+                url: 'https://www.google.com'
+            }
+        });
+    }
+
+    navigatetoLWCPage() {
+        var definition = {
+            componentDef: 'c:index',
+            attributes: {
+                recordId: '87887898'
+            }
+        }
+        this[NavigationMixin.Navigate]({
+            type: 'standard__webPage',
+            attributes: {
+                url: 'one/one.app#' + btoa(JSON.stringify(definition))
+            }
+        });
+    }
+
+    naviagatetoAura() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__component',
+            attributes: {
+                componentName: 'c__Aura2LwcCommunication'
+            }
+        });
+    }
+
+    @wire(CurrentPageReference)
+    pageRef;
+    currentpage() {
+        var msg = this.pageRef ? JSON.stringify(this.pageRef, null, 2) : '';
+        alert(msg);
+
+
+    }
+}
+--------------------------------------------------------------------------------------------------------
