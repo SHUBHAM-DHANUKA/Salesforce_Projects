@@ -1,0 +1,26 @@
+public Integer fibonacci(Integer n) {
+    //code here
+    Integer first  =1;
+    Integer second =1;
+    Integer sum = 0;
+    Integer [] ary = new Integer[n+1];
+    ary[0] = first;
+    ary[1] = second;
+
+    Integer j = 0;
+
+    if (n == 1 || n ==2) {
+       return 1;
+    }else{
+        for (Integer i = 2 ;i < n; i++){
+            first = ary[i-1];
+            second = ary[i-2];
+            ary[i] = first + second; 
+        }
+        return ary[n-1];
+     
+    }
+       
+           
+            
+}
